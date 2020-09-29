@@ -5,6 +5,7 @@ import 'package:jokosun/screens/dash_board.dart';
 import 'package:jokosun/screens/human_ressources.dart';
 import 'package:jokosun/screens/main_screen.dart';
 import 'package:jokosun/screens/pending_installs.dart';
+import 'file:///C:/Users/PAYDUNYA/flutterProjects/WB/jokosun_flutter/lib/screens/profile/profile.dart';
 import 'package:jokosun/screens/search_install.dart';
 
 void main() => runApp(MyApp());
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         HumanResources.routeName: (ctx) => HumanResources(),
         PendingInstalls.routeName: (ctx) => PendingInstalls(),
         SearchInstall.routeName: (ctx) => SearchInstall(),
+        Profile.routeName: (ctx) => Profile(),
       },
     );
   }
