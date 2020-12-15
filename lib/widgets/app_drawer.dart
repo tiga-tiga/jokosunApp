@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:jokosun/constants/app_colors.dart';
+import 'package:jokosun/models/user_model.dart';
+import 'package:jokosun/providers/user.dart';
+import 'package:jokosun/screens/admin/admin_screen.dart';
 import 'package:jokosun/screens/client_suggest.dart';
 import 'package:jokosun/screens/dash_board.dart';
 import 'package:jokosun/screens/pending_installs.dart';
 import 'package:jokosun/screens/search_install.dart';
+import 'package:jokosun/screens/shop_screen.dart';
+import 'package:provider/provider.dart';
 
 class Appdrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    UserModel userModel = Provider.of<UserProvider>(context).user;
     return Drawer(
       // Add a ListView to the drawer. This ensures the user can scroll
       // through the options in the drawer if there isn't enough vertical
@@ -19,18 +26,32 @@ class Appdrawer extends StatelessWidget {
           children: <Widget>[
             Container(
               color: AppColors.ACCENT_COLOR,
-              child: DrawerHeader(
+              child: UserAccountsDrawerHeader(
 
-                child: Text('Drawer Header', style: TextStyle(color: AppColors.PRIMARY_COLOR, fontSize: 16),),
+                decoration: BoxDecoration(color: AppColors.PRIMARY_COLOR),
+                accountName: Text('Installateur'),
+                accountEmail: Text('gmtsarr@gmail.com'),
+                currentAccountPicture: new CircleAvatar(
+                  radius: 50.0,
+                  backgroundColor: const Color(0xFF778899),
+                  backgroundImage:
+                  NetworkImage("https://tineye.com/images/widgets/mona.jpg"),
+                ),
               ),
             ),
             Container(
               child: Column(
                 children: <Widget>[
                   ListTile(
-                    title: Text(
-                      'Tableau de bord',
-                      style: TextStyle(color: AppColors.PRIMARY_COLOR),
+                    title: Row(
+                      children: [
+                        Icon(Icons.description, color: Colors.orange,),
+                        SizedBox(width: 5,),
+                        Text(
+                          'Tableau de bord',
+                          style: TextStyle(color: AppColors.PRIMARY_COLOR),
+                        ),
+                      ],
                     ),
                     onTap: () {
                       Navigator.pop(context);
@@ -38,72 +59,92 @@ class Appdrawer extends StatelessWidget {
                     },
                   ),
                   ListTile(
-                    title: Text(
-                      'Installations en attentes',
-                      style: TextStyle(color: AppColors.PRIMARY_COLOR),
+                    title: Row(
+                      children: [
+                        Icon(Icons.lock_clock, color: Colors.red.shade500,),
+                        SizedBox(width: 5,),
+                        Text(
+                          'Installations en attentes',
+                          style: TextStyle(color: AppColors.PRIMARY_COLOR),
+                        ),
+                      ],
                     ),
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.of(context).pushReplacementNamed(PendingInstalls.routeName);
+                      Navigator.of(context).pushNamed(PendingInstalls.routeName);
                     },
                   ),
                   ListTile(
-                    title: Text(
-                      'Chercher une install',
-                      style: TextStyle(color: AppColors.PRIMARY_COLOR),
+                    title: Row(
+                      children: [
+                        Icon(Icons.search, color: Colors.grey,),
+                        SizedBox(width: 5,),
+                        Text(
+                          'Chercher une installation',
+                          style: TextStyle(color: AppColors.PRIMARY_COLOR),
+                        ),
+                      ],
                     ),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.of(context)
-                          .pushReplacementNamed(SearchInstall.routeName);
+                          .pushNamed(SearchInstall.routeName);
                     },
                   ),
                   ListTile(
-                    title: Text(
-                      'Proposer un client',
-                      style: TextStyle(color: AppColors.PRIMARY_COLOR),
+                    title: Row(
+                      children: [
+                        Icon(Icons.add, color: Colors.green.shade300,),
+                        SizedBox(width: 5,),
+                        Text(
+                          'Proposer un client',
+                          style: TextStyle(color: AppColors.PRIMARY_COLOR),
+                        ),
+                      ],
                     ),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.of(context)
-                          .pushReplacementNamed(ClientSuggest.routeName);
+                          .pushNamed(ClientSuggest.routeName);
                     },
                   ),
+
+
                   ListTile(
-                    title: Text(
-                      'Ressources humaine',
-                      style: TextStyle(color: AppColors.PRIMARY_COLOR),
+                    title: Row(
+                      children: [
+                        Icon(Icons.shopping_cart, color: Colors.orange,),
+                        SizedBox(width: 5,),
+                        Text(
+                          'Aller à la boutique',
+                          style: TextStyle(color: AppColors.PRIMARY_COLOR),
+                        ),
+                      ],
                     ),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.of(context)
-                          .pushReplacementNamed(ClientSuggest.routeName);
+                          .pushNamed(ShopScreen.routeName);
                     },
                   ),
-                  ListTile(
-                    leading: Icon(Icons.add),
-                    title: Text(
-                      'Equipe',
-                      style: TextStyle(color: AppColors.PRIMARY_COLOR),
+                  userModel.role.id ==  1 ?ListTile(
+                    title: Row(
+                      children: [
+                        Icon(Icons.person, color: Colors.cyan,),
+                        SizedBox(width: 5,),
+                        Text(
+                          'Admin',
+                          style: TextStyle(color: AppColors.PRIMARY_COLOR),
+                        ),
+                      ],
                     ),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.of(context)
-                          .pushReplacementNamed(ClientSuggest.routeName);
+                          .pushNamed(AdminScreen.routeName);
                     },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.add),
-                    title: Text(
-                      'Se former',
-                      style: TextStyle(color: AppColors.PRIMARY_COLOR),
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.of(context)
-                          .pushReplacementNamed(ClientSuggest.routeName);
-                    },
-                  ),
+                  ): SizedBox() ,
+
                 ],
               ),
             )

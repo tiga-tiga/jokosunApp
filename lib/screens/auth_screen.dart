@@ -2,10 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:jokosun/constants/app_colors.dart';
+import 'package:jokosun/constants/app_text.dart';
 import 'package:jokosun/providers/user.dart';
 import 'package:jokosun/screens/dash_board.dart';
+import 'package:jokosun/utils/app_dialogs.dart';
 import 'package:provider/provider.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -31,29 +32,34 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return
-      loading? Scaffold(
-        body: Center(
-          child: SpinKitCubeGrid(
-            color: AppColors.ACCENT_COLOR,
-            size: 50.0,
-          ),
-        ),
-      ):Scaffold(
-      body: Container(
-        color: AppColors.PRIMARY_COLOR,
-        child: ListView(
-          children: <Widget>[
-            SizedBox(height: 30.0,),
-           // Container(padding: EdgeInsets.symmetric(vertical: 32.0, horizontal: 48),child: Image(image: AssetImage('assets/img/wbtech.png'))),
-            SizedBox(height: 20.0,),
+    return loading
+        ? Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(
+                backgroundColor: AppColors.PRIMARY_COLOR,
+                valueColor:
+                    new AlwaysStoppedAnimation<Color>(AppColors.ACCENT_COLOR),
+              ),
+            ),
+          )
+        : Scaffold(
+            body: Container(
+              color: AppColors.PRIMARY_COLOR,
+              child: ListView(
+                children: <Widget>[
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  // Container(padding: EdgeInsets.symmetric(vertical: 32.0, horizontal: 48),child: Image(image: AssetImage('assets/img/wbtech.png'))),
+                  SizedBox(
+                    height: 20.0,
+                  ),
 
-            _buildLoginForm(),
-
-          ],
-        ),
-      ),
-    );
+                  _buildLoginForm(),
+                ],
+              ),
+            ),
+          );
   }
 
   Container _buildLoginForm() {
@@ -75,7 +81,9 @@ class _AuthScreenState extends State<AuthScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(height: 90.0,),
+                    SizedBox(
+                      height: 90.0,
+                    ),
                     Container(
                         padding: EdgeInsets.symmetric(horizontal: 20.0),
                         child: TextFormField(
@@ -86,17 +94,25 @@ class _AuthScreenState extends State<AuthScreen> {
                             });
                           },
                           validator: (val) =>
-                          val.isEmpty ? 'Enter an email' : null,
+                              val.isEmpty ? 'Enter an email' : null,
                           style: TextStyle(color: AppColors.ACCENT_COLOR),
                           decoration: InputDecoration(
                               hintText: "Adresse email",
-                              hintStyle: TextStyle(color: AppColors.ACCENT_COLOR),
+                              hintStyle:
+                                  TextStyle(color: AppColors.ACCENT_COLOR),
                               border: InputBorder.none,
-                              icon: Icon(Icons.email, color: AppColors.ACCENT_COLOR,)
-                          ),
-                        )
+                              icon: Icon(
+                                Icons.email,
+                                color: AppColors.ACCENT_COLOR,
+                              )),
+                        )),
+                    Container(
+                      child: Divider(
+                        color: AppColors.ACCENT_COLOR,
+                      ),
+                      padding: EdgeInsets.only(
+                          left: 20.0, right: 20.0, bottom: 10.0),
                     ),
-                    Container(child: Divider(color: AppColors.ACCENT_COLOR,), padding: EdgeInsets.only(left: 20.0,right: 20.0, bottom: 10.0),),
                     Container(
                         padding: EdgeInsets.symmetric(horizontal: 20.0),
                         child: TextFormField(
@@ -107,29 +123,40 @@ class _AuthScreenState extends State<AuthScreen> {
                             });
                           },
                           validator: (val) =>
-                          val.isEmpty ? 'Mot de passe nécessaire' : null,
-                          style: TextStyle(color: Colors.blue),
+                              val.isEmpty ? 'Mot de passe nécessaire' : null,
+                          style: TextStyle(color: AppColors.ACCENT_COLOR),
+                          obscureText: true,
                           decoration: InputDecoration(
                               hintText: "Mot de passe",
-                              hintStyle: TextStyle(color: AppColors.ACCENT_COLOR),
+                              hintStyle:
+                                  TextStyle(color: AppColors.ACCENT_COLOR),
                               border: InputBorder.none,
-                              icon: Icon(Icons.lock, color: AppColors.ACCENT_COLOR,)
-                          ),
-                        )
+                              icon: Icon(
+                                Icons.lock,
+                                color: AppColors.ACCENT_COLOR,
+                              )),
+                        )),
+                    Container(
+                      child: Divider(
+                        color: AppColors.ACCENT_COLOR,
+                      ),
+                      padding: EdgeInsets.only(
+                          left: 20.0, right: 20.0, bottom: 10.0),
                     ),
-                    Container(child: Divider(color: AppColors.ACCENT_COLOR,), padding: EdgeInsets.only(left: 20.0,right: 20.0, bottom: 10.0),),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        Container(padding: EdgeInsets.only(right: 20.0),
-                            child: Text("Mot de passe oublié?",
+                        Container(
+                            padding: EdgeInsets.only(right: 20.0),
+                            child: Text(
+                              "Mot de passe oublié?",
                               style: TextStyle(color: Colors.black45),
-                            )
-                        )
+                            ))
                       ],
                     ),
-                    SizedBox(height: 10.0,),
-
+                    SizedBox(
+                      height: 10.0,
+                    ),
                   ],
                 ),
               ),
@@ -141,7 +168,10 @@ class _AuthScreenState extends State<AuthScreen> {
               CircleAvatar(
                 radius: 40.0,
                 backgroundColor: AppColors.ACCENT_COLOR,
-                child: Icon(Icons.person, color: Colors.white,),
+                child: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),
@@ -151,31 +181,31 @@ class _AuthScreenState extends State<AuthScreen> {
               alignment: Alignment.bottomCenter,
               child: RaisedButton(
                 onPressed: () async {
-
-                  Navigator.pushNamed(context, DashBoard.routeName);
-//                  if(_formKey.currentState.validate()) {
-//                    setState(() {
-//                      loading = true;
-//                    });
-//                    print(email);
-//                    print(password);
-//                    Provider.of<UserProvider>(context, listen: false).signIn(email.trim(), password.trim()).then((auth) {
-//                      setState(() {
-//                        loading = false;
-//                        if(auth.status == 0){
-//                          Navigator.pushNamed(context, DashBoard.routeName);
-//                        } else {
-//
-//                          _showMyDialog(auth.message);
-//                        }
-//                      });
-//
-//                    });
-//
-//                  }
+                  if (_formKey.currentState.validate()) {
+                    setState(() {
+                      loading = true;
+                    });
+                    print(email);
+                    print(password);
+                    Provider.of<UserProvider>(context, listen: false)
+                        .signIn(email.trim(), password.trim())
+                        .then((responseModel) {
+                      setState(() {
+                        loading = false;
+                      });
+                      if (responseModel.success) {
+                        Navigator.pushNamed(context, DashBoard.routeName);
+                      } else {
+                        AppDialogs().showResponseDialog(context,
+                            'Vérifiez vos identifiants de connexion', false);
+                      }
+                    });
+                  }
                 },
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
-                child: Text("Se connecter", style: TextStyle(color: Colors.white70, fontWeight: FontWeight.bold)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40.0)),
+                child: Text("Se connecter",
+                    style: mediumBoldTextStyle(AppColors.PRIMARY_COLOR)),
                 color: AppColors.ACCENT_COLOR,
               ),
             ),
@@ -184,35 +214,4 @@ class _AuthScreenState extends State<AuthScreen> {
       ),
     );
   }
-  Future<void> _showMyDialog(String message) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Attention'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(message),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Reessayer'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-
 }
-
-
-

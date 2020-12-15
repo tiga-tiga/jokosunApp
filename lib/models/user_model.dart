@@ -1,91 +1,70 @@
-class User {
-  User({
+// To parse this JSON data, do
+//
+//     final userModel = userModelFromJson(jsonString);
+
+import 'dart:convert';
+
+import 'company_model.dart';
+
+UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
+
+String userModelToJson(UserModel data) => json.encode(data.toJson());
+
+class UserModel {
+  UserModel({
     this.id,
-    this.firstname,
-    this.lastname,
-    this.phone,
+    this.name,
     this.email,
-    this.username,
-    this.password,
-    this.createdAt,
-    this.profile,
-    this.profession,
+    this.phone,
+    this.profilePhotoUrl,
     this.company,
-    this.active,
-    this.blacklisted,
+    this.role,
   });
 
   int id;
-  String firstname;
-  String lastname;
-  String phone;
+  String name;
   String email;
-  String username;
-  String password;
-  int createdAt;
-  Profile profile;
-  dynamic profession;
-  dynamic company;
-  bool active;
-  bool blacklisted;
+  String phone;
+  String profilePhotoUrl;
+  Company company;
+  Role role;
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"],
-    firstname: json["firstname"],
-    lastname: json["lastname"],
-    phone: json["phone"],
-    email: json["email"],
-    username: json["username"],
-    password: json["password"],
-    createdAt: json["createdAt"],
-    profile: Profile.fromJson(json["profile"]),
-    profession: json["profession"],
-    company: json["company"],
-    active: json["active"],
-    blacklisted: json["blacklisted"],
-  );
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      UserModel(
+        id: json["id"],
+        name: json["name"],
+        email: json["email"],
+        phone: json["phone"],
+        profilePhotoUrl: json["profile_photo_url"],
+        company: Company.fromJson(json["company"]),
+        role: Role.fromJson(json["role"]),
+      );
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "firstname": firstname,
-    "lastname": lastname,
-    "phone": phone,
-    "email": email,
-    "username": username,
-    "password": password,
-    "createdAt": createdAt,
-    "profile": profile.toJson(),
-    "profession": profession,
-    "company": company,
-    "active": active,
-    "blacklisted": blacklisted,
-  };
+  Map<String, dynamic> toJson() =>
+      {
+        "id": id,
+        "name": name,
+        "email": email,
+        "phone": phone,
+        "profile_photo_url": profilePhotoUrl,
+        "company": company.toJson(),
+      };
 }
 
-class Profile {
-  Profile({
+class Role {
+  int id;
+  String label;
+
+  Role({
     this.id,
-    this.title,
-    this.description,
-    this.status,
+    this.label
   });
 
-  int id;
-  String title;
-  String description;
-  int status;
-
-  factory Profile.fromJson(Map<String, dynamic> json) => Profile(
-    id: json["id"],
-    title: json["title"],
-    description: json["description"],
-    status: json["status"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "title": title,
-    "description": description,
-    "status": status,
-  };
+  factory Role.fromJson(Map<String, dynamic> json) =>
+      Role(
+        id: json["id"],
+        label: json["label"],
+      );
 }
+
+

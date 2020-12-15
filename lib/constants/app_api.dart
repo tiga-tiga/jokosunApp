@@ -1,2 +1,2 @@
 
-const baseUrl = 'https://smart-btp.herokuapp.com';
+const baseUrl = 'https://jokosun.dohappit.com/api';

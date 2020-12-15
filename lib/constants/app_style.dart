@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jokosun/constants/app_text.dart';
 
 import 'app_colors.dart';
 
@@ -6,9 +7,19 @@ import 'app_colors.dart';
 AppBar mainAppBar(String title) {
   return AppBar(
     centerTitle: true,
-    title: Text(title,  style: TextStyle(color: AppColors.ACCENT_COLOR),),
+    title: Text(title,  style: regularLightTextStyle(AppColors.ACCENT_COLOR),),
     backgroundColor: AppColors.PRIMARY_COLOR,
     iconTheme: IconThemeData(color: AppColors.ACCENT_COLOR),
+  );
+}
+
+Center loadingLayout() {
+  return Center(
+    child: CircularProgressIndicator(
+      backgroundColor: AppColors.PRIMARY_COLOR,
+      valueColor:
+      new AlwaysStoppedAnimation<Color>(AppColors.ACCENT_COLOR),
+    ),
   );
 }
 InputDecoration textInputDecoration(String hint) {
@@ -23,12 +34,19 @@ InputDecoration textInputDecoration(String hint) {
 
 InputDecoration textFieldInputDecoration(String hintText) {
   return InputDecoration(
+      focusColor: AppColors.PRIMARY_COLOR_DARK,
+      labelText: hintText,
       hintText: hintText,
       hintStyle: TextStyle(color: AppColors.PRIMARY_COLOR_DARK),
-      focusedBorder:
-      UnderlineInputBorder(borderSide: BorderSide(color: AppColors.PRIMARY_COLOR_DARK)),
-      enabledBorder:
-      UnderlineInputBorder(borderSide: BorderSide(color: AppColors.PRIMARY_COLOR_DARK)));
+      focusedBorder:OutlineInputBorder(
+        borderRadius:
+        BorderRadius.all(Radius.circular(8.0)),
+
+        borderSide: BorderSide(color: AppColors.PRIMARY_COLOR_DARK),
+      ),
+      border:OutlineInputBorder(
+          borderRadius:
+          BorderRadius.all(Radius.circular(8.0))));
 }
 
 RoundedRectangleBorder buttonMainShape(){
@@ -37,6 +55,8 @@ RoundedRectangleBorder buttonMainShape(){
       side: BorderSide(color: AppColors.PRIMARY_COLOR_DARK)
   );
 }
+
+
 
 InputDecoration searchTextDecoration (){
   return InputDecoration(

@@ -1,12 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:jokosun/providers/user.dart';
+import 'package:jokosun/screens/add_team_screen.dart';
+import 'package:jokosun/screens/admin/admin_companies_screen.dart';
+import 'package:jokosun/screens/admin/admin_create_offer_screen.dart';
+import 'package:jokosun/screens/admin/admin_installations.dart';
+import 'package:jokosun/screens/admin/admin_offers_screen.dart';
+import 'package:jokosun/screens/admin/admin_screen.dart';
+import 'package:jokosun/screens/apply_screen.dart';
 import 'package:jokosun/screens/auth_screen.dart';
 import 'package:jokosun/screens/client_suggest.dart';
+import 'package:jokosun/screens/compose_team_screen.dart';
 import 'package:jokosun/screens/dash_board.dart';
-import 'package:jokosun/screens/human_ressources.dart';
-import 'package:jokosun/screens/main_screen.dart';
+import 'package:jokosun/screens/edit_company_screen.dart';
+import 'package:jokosun/screens/history_screen.dart';
+import 'package:jokosun/screens/installation/installation_screen.dart';
+import 'package:jokosun/screens/installation/installation_timeline.dart';
+import 'package:jokosun/screens/installation/subScreens/inventory_screen.dart';
+import 'package:jokosun/screens/my_company_screen.dart';
+import 'package:jokosun/screens/my_team_screen.dart';
+import 'package:jokosun/screens/news_screen.dart';
 import 'package:jokosun/screens/pending_installs.dart';
-import 'file:///C:/Users/PAYDUNYA/flutterProjects/WB/jokosun_flutter/lib/screens/profile/profile.dart';
+import 'package:jokosun/screens/profile/bank_details.dart';
+import 'package:jokosun/screens/profile/kit_detail.dart';
+import 'package:jokosun/screens/profile/my_contracts.dart';
+import 'package:jokosun/screens/profile/my_kits_screen.dart';
+import 'package:jokosun/screens/profile/profile.dart';
 import 'package:jokosun/screens/search_install.dart';
+import 'package:jokosun/screens/technical_sheet_screen.dart';
+import 'package:jokosun/screens/shop_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,21 +36,48 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) => UserProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: AuthScreen(),
+        routes: {
+          ClientSuggest.routeName: (ctx) => ClientSuggest(),
+          DashBoard.routeName: (ctx) => DashBoard(),
+          AdminScreen.routeName: (ctx) => AdminScreen(),
+          PendingInstalls.routeName: (ctx) => PendingInstalls(),
+          SearchInstall.routeName: (ctx) => SearchInstall(),
+          Profile.routeName: (ctx) => Profile(),
+          BankDetails.routeName: (ctx) => BankDetails(),
+          MyContracts.routeName: (ctx) => MyContracts(),
+          ApplyScreen.routeName: (ctx) => ApplyScreen(),
+          TechnicalSheetScreen.routeName: (ctx) => TechnicalSheetScreen(),
+          InstallationScreen.routeName: (ctx) => InstallationScreen(),
+          MyCompanyScreen.routeName: (ctx) => MyCompanyScreen(),
+          MyTeam.routeName: (ctx) => MyTeam(),
+          AddTeam.routeName: (ctx) => AddTeam(),
+          EditCompany.routeName: (ctx) => EditCompany(),
+          InventoryScreen.routeName: (ctx) => InventoryScreen(),
+          InstallationTimeline.routeName: (ctx) => InstallationTimeline(),
+          HistoryScreen.routeName: (ctx) => HistoryScreen(),
+          ShopScreen.routeName: (ctx) => ShopScreen(),
+          NewsScreen.routeName: (ctx) => NewsScreen(),
+          MyKits.routeName: (ctx) => MyKits(),
+          KitDetail.routeName: (ctx) => KitDetail(),
+          Composeteam.routeName: (ctx) => Composeteam(),
+          AdminOffers.routeName: (ctx) => AdminOffers(),
+          AdminCreateOffer.routeName: (ctx) => AdminCreateOffer(),
+          AdminInstallations.routeName: (ctx) => AdminInstallations(),
+          AdminCompaniesScreen.routeName: (ctx) => AdminCompaniesScreen(),
+        },
       ),
-      home: AuthScreen(),
-      routes: {
-        ClientSuggest.routeName: (ctx) => ClientSuggest(),
-        DashBoard.routeName: (ctx) => DashBoard(),
-        HumanResources.routeName: (ctx) => HumanResources(),
-        PendingInstalls.routeName: (ctx) => PendingInstalls(),
-        SearchInstall.routeName: (ctx) => SearchInstall(),
-        Profile.routeName: (ctx) => Profile(),
-      },
     );
   }
 }
