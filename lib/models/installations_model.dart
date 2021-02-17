@@ -131,8 +131,6 @@ class Company {
     address: json["address"],
     ninea: json["ninea"],
     bonus: json["bonus"],
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -143,8 +141,6 @@ class Company {
     "address": address,
     "ninea": ninea,
     "bonus": bonus,
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
   };
 }
 

@@ -87,11 +87,11 @@ class UserApi {
 
   Future<ResponseModel> finalizeInstallationRequest(
       int installationId,
+      int  feeling,
+      String comment,
       String file1,
       String file2,
-      String file3,
-      String file4,
-      String file5,) async {
+      String file3,) async {
     final String apiUrl =
         '$baseUrl/installations/setups/${installationId}/finish';
     print(installationId);
@@ -112,12 +112,31 @@ class UserApi {
     request.files.add(new http.MultipartFile.fromBytes(
         'photos[]', await File.fromUri(Uri.parse(file3)).readAsBytes(),
         filename: 'photo3', contentType: new MediaType('image', 'jpeg')));
+    request.fields['feeling'] = feeling.toString();
+    request.fields['comment'] = comment;
+    request.headers.addAll(
+        {"Authorization": "Bearer $token", "Accept": "application/json"});
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+
+    print(response.body);
+    return responseModelFromJson(utf8.decode(response.bodyBytes));
+  }
+Future<ResponseModel> sendInvoice(
+      int installationId,
+      String invoice,) async {
+    final String apiUrl =
+        '$baseUrl/installations/${installationId}/invoice';
+    print(installationId);
+    final prefs = await SharedPreferences.getInstance();
+    print('init shared');
+    String token = await prefs.get('userToken');
+    var request = new http.MultipartRequest("POST", Uri.parse(apiUrl));
+   
     request.files.add(new http.MultipartFile.fromBytes(
-        'photos[]', await File.fromUri(Uri.parse(file4)).readAsBytes(),
-        filename: 'photo4', contentType: new MediaType('image', 'jpeg')));
-    request.files.add(new http.MultipartFile.fromBytes(
-        'photos[]', await File.fromUri(Uri.parse(file5)).readAsBytes(),
-        filename: 'photo5', contentType: new MediaType('image', 'jpeg')));
+        'invoice', await File.fromUri(Uri.parse(invoice)).readAsBytes(),
+        filename: 'invoice'));
+
     request.headers.addAll(
         {"Authorization": "Bearer $token", "Accept": "application/json"});
     final streamedResponse = await request.send();

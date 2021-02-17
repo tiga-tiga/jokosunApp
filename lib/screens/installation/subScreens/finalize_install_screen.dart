@@ -28,19 +28,20 @@ class _FinalizeInstallScreenState extends State<FinalizeInstallScreen> {
   var imagePath1;
   var imagePath2;
   var imagePath3;
-  var imagePath4;
-  var imagePath5;
   bool loading = false;
+  String comment = '';
 
-  int _radioValue1 = -1;
-  int _radioValue2 = -1;
-  int _radioValue3 = -1;
+  final _text = TextEditingController();
+  bool _validate = false;
+
+  int feeling = 1;
 
   bool isButtonEnable() {
+    _text.text.isEmpty ? _validate = true : _validate = false;
     return checkSignShipment &&
         checkVisitCard &&
         checkExplanation &&
-        checkNotice;
+        checkNotice && _validate;
   }
 
   @override
@@ -207,7 +208,7 @@ class _FinalizeInstallScreenState extends State<FinalizeInstallScreen> {
                               child: Column(
                                 children: [
                                   Text(
-                                    'Prenez 5 belles photos de l\'intallation \n et des clients (si possible)',
+                                    'Prenez 3 belles photos de l\'intallation \n et des clients (si possible)',
                                     textAlign: TextAlign.center,
                                     style: mediumLightTextStyle(
                                         AppColors.PRIMARY_COLOR),
@@ -449,161 +450,6 @@ class _FinalizeInstallScreenState extends State<FinalizeInstallScreen> {
                                       ),
                                     ),
                                   ),
-                                  Card(
-                                    shape: imagePath4 != null
-                                        ? RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            side: BorderSide(
-                                              color: Colors.green,
-                                              width: 1.5,
-                                            ),
-                                          )
-                                        : null,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 4),
-                                      child: ListTile(
-                                        leading: GestureDetector(
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                color: AppColors.ACCENT_COLOR,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10))),
-                                            padding: EdgeInsets.all(2),
-                                            child: ClipRRect(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(8)),
-                                                child: imagePath4 != null
-                                                    ? Image.file(
-                                                        File(imagePath4),
-                                                        height: 50,
-                                                        width: 50,
-                                                        fit: BoxFit.cover,
-                                                      )
-                                                    : Image.asset(
-                                                        'assets/img/take_picture.jpg',
-                                                        height: 50)),
-                                          ),
-                                          onTap: () {
-                                            if (imagePath4 != null) {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      DisplayPictureScreen(
-                                                          imagePath:
-                                                              imagePath4),
-                                                ),
-                                              );
-                                            }
-                                          },
-                                        ),
-                                        title: Text('Photo 4',
-                                            style: regularLightTextStyle(
-                                                AppColors.PRIMARY_COLOR)),
-                                        trailing: GestureDetector(
-                                            onTap: () async {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      TakePictureScreen(),
-                                                ),
-                                              ).then((value) {
-                                                if (value != null) {
-                                                  setState(() {
-                                                    imagePath4 = value;
-                                                  });
-                                                }
-                                              });
-                                            },
-                                            child: Text(
-                                                imagePath3 != null
-                                                    ? 'Modifier'
-                                                    : "Ajouter",
-                                                style: mediumLightTextStyle(
-                                                    AppColors.PRIMARY_COLOR))),
-                                      ),
-                                    ),
-                                  ),
-                                  Card(
-                                    shape: imagePath5 != null
-                                        ? RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            side: BorderSide(
-                                              color: Colors.green,
-                                              width: 1.5,
-                                            ),
-                                          )
-                                        : null,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 4),
-                                      child: ListTile(
-                                        leading: GestureDetector(
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                color: AppColors.ACCENT_COLOR,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10))),
-                                            padding: EdgeInsets.all(2),
-                                            child: ClipRRect(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(8)),
-                                                child: imagePath5 != null
-                                                    ? Image.file(
-                                                        File(imagePath5),
-                                                        height: 50,
-                                                        width: 50,
-                                                        fit: BoxFit.cover,
-                                                      )
-                                                    : Image.asset(
-                                                        'assets/img/take_picture.jpg',
-                                                        height: 50)),
-                                          ),
-                                          onTap: () {
-                                            if (imagePath5 != null) {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        DisplayPictureScreen(
-                                                            imagePath:
-                                                                imagePath5)),
-                                              );
-                                            }
-                                          },
-                                        ),
-                                        title: Text('Photo 5',
-                                            style: regularLightTextStyle(
-                                                AppColors.PRIMARY_COLOR)),
-                                        trailing: GestureDetector(
-                                            onTap: () async {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      TakePictureScreen(),
-                                                ),
-                                              ).then((value) {
-                                                if (value != null) {
-                                                  setState(() {
-                                                    imagePath5 = value;
-                                                  });
-                                                }
-                                              });
-                                            },
-                                            child: Text(
-                                                imagePath5 != null
-                                                    ? 'Modifier'
-                                                    : "Ajouter",
-                                                style: mediumLightTextStyle(
-                                                    AppColors.PRIMARY_COLOR))),
-                                      ),
-                                    ),
-                                  ),
                                 ],
                               ),
                             )
@@ -617,14 +463,12 @@ class _FinalizeInstallScreenState extends State<FinalizeInstallScreen> {
                               child: child, scale: animation);
                         },
                         child: checkNotice &&
-                                    checkExplanation &&
-                                    checkSignShipment &&
-                                    checkVisitCard &&
-                                    imagePath1 != null &&
-                                    imagePath2 != null &&
-                                    imagePath3 != null &&
-                                    imagePath4 != null &&
-                                    imagePath5 != null ||
+                                checkExplanation &&
+                                checkSignShipment &&
+                                checkVisitCard &&
+                                imagePath1 != null &&
+                                imagePath2 != null &&
+                                imagePath3 != null &&
                                 1 == 1
                             ? Visibility(
                                 maintainState: true,
@@ -635,9 +479,7 @@ class _FinalizeInstallScreenState extends State<FinalizeInstallScreen> {
                                     checkVisitCard &&
                                     imagePath1 != null &&
                                     imagePath2 != null &&
-                                    imagePath3 != null &&
-                                    imagePath4 != null &&
-                                    imagePath5 != null,
+                                    imagePath3 != null,
                                 child: Column(children: [
                                   SizedBox(
                                     height: 24,
@@ -653,7 +495,7 @@ class _FinalizeInstallScreenState extends State<FinalizeInstallScreen> {
                                         ),
                                         Center(
                                           child: Text(
-                                            'Avez vous eu rencontré des difficultés?',
+                                            'L\'installation s\'est elle bien passé?',
                                             style: mediumBoldTextStyle(
                                                 AppColors.PRIMARY_COLOR),
                                           ),
@@ -663,22 +505,22 @@ class _FinalizeInstallScreenState extends State<FinalizeInstallScreen> {
                                               MainAxisAlignment.center,
                                           children: <Widget>[
                                             new Radio(
-                                                value: 0,
-                                                groupValue: _radioValue1,
+                                                value: 1,
+                                                groupValue: feeling,
                                                 onChanged: (value) {
                                                   setState(() {
-                                                    _radioValue1 = value;
+                                                    feeling = value;
                                                   });
                                                 }),
                                             new Text('Oui',
                                                 style: mediumLightTextStyle(
                                                     AppColors.PRIMARY_COLOR)),
                                             new Radio(
-                                                value: 1,
-                                                groupValue: _radioValue1,
+                                                value: 0,
+                                                groupValue: feeling,
                                                 onChanged: (value) {
                                                   setState(() {
-                                                    _radioValue1 = value;
+                                                    feeling = value;
                                                   });
                                                 }),
                                             new Text('Non',
@@ -686,102 +528,27 @@ class _FinalizeInstallScreenState extends State<FinalizeInstallScreen> {
                                                     AppColors.PRIMARY_COLOR)),
                                           ],
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  Card(
-                                    elevation: 4.0,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        SizedBox(
-                                          height: 8,
-                                        ),
-                                        Center(
-                                          child: Text(
-                                            'Questions a définir?',
-                                            style: mediumBoldTextStyle(
-                                                AppColors.PRIMARY_COLOR),
-                                          ),
-                                        ),
-                                        Center(
-                                          child: Text(''),
-                                        ),
-                                        new Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            new Radio(
-                                                value: 0,
-                                                groupValue: _radioValue3,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    _radioValue3 = value;
-                                                  });
-                                                }),
-                                            new Text('Oui',
-                                                style: mediumLightTextStyle(
-                                                    AppColors.PRIMARY_COLOR)),
-                                            new Radio(
-                                                value: 1,
-                                                groupValue: _radioValue3,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    _radioValue3 = value;
-                                                  });
-                                                }),
-                                            new Text('Non',
-                                                style: mediumLightTextStyle(
-                                                    AppColors.PRIMARY_COLOR)),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Card(
-                                    elevation: 4.0,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        SizedBox(
-                                          height: 8,
-                                        ),
-                                        Center(
-                                          child: Text(
-                                            'Questions a définir?',
-                                            style: mediumBoldTextStyle(
-                                                AppColors.PRIMARY_COLOR),
-                                          ),
-                                        ),
-                                        new Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            new Radio(
-                                                value: 0,
-                                                groupValue: _radioValue2,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    _radioValue2 = value;
-                                                  });
-                                                }),
-                                            new Text('Oui',
-                                                style: mediumLightTextStyle(
-                                                    AppColors.PRIMARY_COLOR)),
-                                            new Radio(
-                                                value: 1,
-                                                groupValue: _radioValue2,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    _radioValue2 = value;
-                                                  });
-                                                }),
-                                            new Text('Non',
-                                                style: mediumLightTextStyle(
-                                                    AppColors.PRIMARY_COLOR)),
-                                          ],
+                                        TextField(
+                                          maxLines: 8,
+                                          onChanged: (value) {
+                                            comment = value;
+                                          },
+
+                                          decoration: InputDecoration(
+                                              focusColor: AppColors.PRIMARY_COLOR_DARK,
+                                              labelText: 'Commentaire',
+                                              hintText: 'Commentaire',
+                                              hintStyle: TextStyle(color: AppColors.PRIMARY_COLOR_DARK),
+                                              focusedBorder:OutlineInputBorder(
+                                                borderRadius:
+                                                BorderRadius.all(Radius.circular(8.0)),
+
+                                                borderSide: BorderSide(color: AppColors.PRIMARY_COLOR_DARK),
+                                              ),
+                                              errorText: _validate ? 'Commentaire obligatoire!!' : null,
+                                              border:OutlineInputBorder(
+                                                  borderRadius:
+                                                  BorderRadius.all(Radius.circular(8.0))))
                                         ),
                                       ],
                                     ),
@@ -805,14 +572,17 @@ class _FinalizeInstallScreenState extends State<FinalizeInstallScreen> {
                         color: Colors.white,
                         onPressed: isButtonEnable()
                             ? () async {
+                                setState(() {
+                                  loading = true;
+                                });
                                 await UserApi()
                                     .finalizeInstallationRequest(
                                   widget.installationId,
+                                  feeling,
+                                  comment,
                                   imagePath1,
                                   imagePath2,
                                   imagePath3,
-                                  imagePath4,
-                                  imagePath5,
                                 )
                                     .then((value) {
                                   setState(() {
@@ -821,8 +591,10 @@ class _FinalizeInstallScreenState extends State<FinalizeInstallScreen> {
                                   if (value.success) {
                                     print('success');
                                     AppDialogs()
-                                        .showResponseDialog(context,
-                                            value.message, value.success)
+                                        .showResponseDialog(
+                                            context,
+                                            "Installation finalisée avec succés ",
+                                            value.success)
                                         .then((value) {
                                       widget.onFinish();
                                     });

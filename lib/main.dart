@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jokosun/providers/user.dart';
+import 'package:jokosun/screens/add_invoce.dart';
 import 'package:jokosun/screens/add_team_screen.dart';
 import 'package:jokosun/screens/admin/admin_companies_screen.dart';
 import 'package:jokosun/screens/admin/admin_create_offer_screen.dart';
@@ -76,6 +77,7 @@ class MyApp extends StatelessWidget {
           AdminCreateOffer.routeName: (ctx) => AdminCreateOffer(),
           AdminInstallations.routeName: (ctx) => AdminInstallations(),
           AdminCompaniesScreen.routeName: (ctx) => AdminCompaniesScreen(),
+          AddInvoice.routeName: (ctx) => AddInvoice(),
         },
       ),
     );
