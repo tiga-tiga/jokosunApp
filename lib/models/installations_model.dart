@@ -16,7 +16,7 @@ class Installations {
   List<Installation> installations;
 
   factory Installations.fromJson(Map<String, dynamic> json) => Installations(
-    installations: List<Installation>.from(json["installations"].map((x) => Installation.fromJson(x))),
+    installations:  List<Installation>.from(json["installations"].map((x) => Installation.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -34,6 +34,8 @@ class Installation {
     this.status,
     this.application,
     this.preparation,
+    this.invoiceable,
+    this.invoice_status,
     this.finished,
   });
 
@@ -43,6 +45,8 @@ class Installation {
   dynamic startAt;
   dynamic endAt;
   String status;
+  bool invoiceable;
+  String invoice_status;
   Application application;
   List<dynamic> preparation;
   List<dynamic> finished;
@@ -54,6 +58,8 @@ class Installation {
     startAt: json["start_at"],
     endAt: json["end_at"],
     status: json["status"],
+    invoiceable: json["invoiceable"],
+    invoice_status: json["invoice_status"],
     application: Application.fromJson(json["application"]),
     preparation: List<dynamic>.from(json["preparation"].map((x) => x)),
     finished: List<dynamic>.from(json["finished"].map((x) => x)),
@@ -66,6 +72,8 @@ class Installation {
     "start_at": startAt,
     "end_at": endAt,
     "status": status,
+    "invoiceable": invoiceable,
+    "invoice_status": invoice_status,
     "application": application.toJson(),
     "preparation": List<dynamic>.from(preparation.map((x) => x)),
     "finished": List<dynamic>.from(finished.map((x) => x)),

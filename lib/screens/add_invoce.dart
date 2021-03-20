@@ -137,12 +137,9 @@ class _AddInvoiceState extends State<AddInvoice> {
                               items[index].status == 'PENDING' ? Text(
                                 'En cours de validation',
                                 style: regularLightTextStyle(
-                                    AppColors.PRIMARY_COLOR),) : items[index]
-                                  .status == 'PENDING'
-                                  ? Text('Réfusé',
+                                    AppColors.PRIMARY_COLOR),) : Text('Réfusé',
                                   style: regularLightTextStyle(Colors.red))
-                                  : Text('Validé',
-                                style: regularLightTextStyle(Colors.green),)
+
                             ],
                           ),
                         ));

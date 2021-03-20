@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 import 'package:jokosun/constants/app_api.dart';
 import 'package:jokosun/constants/app_colors.dart';
@@ -8,7 +9,11 @@ import 'package:jokosun/models/company_model.dart';
 import 'package:jokosun/models/response_model.dart';
 import 'package:jokosun/models/technician_model.dart';
 import 'package:jokosun/screens/add_team_screen.dart';
+import 'package:jokosun/screens/admin/admin_company_details.dart';
+import 'package:jokosun/screens/admin/admin_create_company.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'admin_create_offer_screen.dart';
 
 class AdminCompaniesScreen extends StatefulWidget {
   static const routeName = '/adminCompanies';
@@ -48,11 +53,43 @@ class _AdminCompaniesScreenState extends State<AdminCompaniesScreen> {
     });
   }
 
+
+  ScrollController _hideButtonController;
+  var _isVisible;
+
   @override
   void initState() {
     _future = getCompanies();
+
     super.initState();
+    _isVisible = true;
+    _hideButtonController = new ScrollController();
+    _hideButtonController.addListener((){
+      if(_hideButtonController.position.userScrollDirection == ScrollDirection.reverse){
+        if(_isVisible == true) {
+          /* only set when the previous state is false
+             * Less widget rebuilds
+             */
+          print("**** ${_isVisible} up"); //Move IO away from setState
+          setState((){
+            _isVisible = false;
+          });
+        }
+      } else {
+        if(_hideButtonController.position.userScrollDirection == ScrollDirection.forward){
+          if(_isVisible == false) {
+            /* only set when the previous state is false
+               * Less widget rebuilds
+               */
+            print("**** ${_isVisible} down"); //Move IO away from setState
+            setState((){
+              _isVisible = true;
+            });
+          }
+        }
+      }});
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +98,26 @@ class _AdminCompaniesScreenState extends State<AdminCompaniesScreen> {
         : Scaffold(
       appBar: mainAppBar('Les installateurs'),
 
+      floatingActionButton: Visibility(
+        visible: _isVisible,
+        child: FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.of(context).pushNamed(AdminCreateCompany.routeName);
+          },
+          icon: Icon(Icons.add,  color: AppColors.ACCENT_COLOR,),
+          backgroundColor: AppColors.PRIMARY_COLOR,
+          label: Text("Nouvel Installateur", style: regularLightTextStyle(AppColors.ACCENT_COLOR)),
+        ),
+      ),
+
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: FutureBuilder<ResponseModel>(
             future: _future,
             builder: (context, snapchot) {
               return ListView.builder(
+
+                  controller: _hideButtonController,
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     return Card(
@@ -90,13 +141,18 @@ class _AdminCompaniesScreenState extends State<AdminCompaniesScreen> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: <Widget>[
 
-                                  Text(
-                                    'Détails',
-                                    style: TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w300,
-                                        color: AppColors.PRIMARY_COLOR),
+                                  GestureDetector(
+                                    child: Text(
+                                      'Installations',
+                                      style: TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w300,
+                                          color: AppColors.PRIMARY_COLOR),
+                                    ),
+                                    onTap: () {
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AdminCompanyDetails(companyId: items[index].id,)));
+                                    },
                                   ),
                                 ],
                               )

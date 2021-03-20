@@ -53,6 +53,25 @@ class AdminApi {
 
     return responseModelFromJson(utf8.decode(response.bodyBytes));
   }
+  Future<ResponseModel> createCompany(String fullName, String email, String phone,String company) async {
+    final String apiUrl = '$baseUrl/managers';
+
+    final prefs = await SharedPreferences.getInstance();
+    print('init shared');
+    String token = await prefs.get('userToken');
+    final response = await http.post(apiUrl, headers: {
+      "Authorization": "Bearer $token",
+    "Accept": "application/json"
+    }, body: {
+      "name": fullName,
+      "phone": phone,
+      "email": email,
+      "company": company,
+    });
+    print(response.body);
+
+    return responseModelFromJson(utf8.decode(response.bodyBytes));
+  }
 Future<ResponseModel> updateOffer(int id, String fullName, String address, String city, int flatRate, int removalAndTransport, String dateWish, int  kitId, int technicians) async {
     final String apiUrl = '$baseUrl/offers/$id';
 
@@ -149,6 +168,34 @@ Future<ResponseModel> deleteInstallation(int id,) async {
       "Accept": "application/json"
     }, body: {
       "application_id": applicationId.toString(),
+    });
+
+    return responseModelFromJson(utf8.decode(response.bodyBytes));
+  }
+Future<ResponseModel> approveInvoice(int installationId, int invoiceId) async {
+    final String apiUrl = '$baseUrl/installations/$installationId/invoice/$invoiceId/approve';
+
+    final prefs = await SharedPreferences.getInstance();
+    print('init shared');
+    String token = await prefs.get('userToken');
+    print(token);
+    final response = await http.get(apiUrl, headers: {
+      "Authorization": "Bearer $token",
+      "Accept": "application/json"
+    });
+
+    return responseModelFromJson(utf8.decode(response.bodyBytes));
+  }
+Future<ResponseModel> rejectInvoice(int installationId, int invoiceId) async {
+    final String apiUrl = '$baseUrl/installations/$installationId/invoice/$invoiceId/reject';
+
+    final prefs = await SharedPreferences.getInstance();
+    print('init shared');
+    String token = await prefs.get('userToken');
+    print(token);
+    final response = await http.get(apiUrl, headers: {
+      "Authorization": "Bearer $token",
+      "Accept": "application/json"
     });
 
     return responseModelFromJson(utf8.decode(response.bodyBytes));

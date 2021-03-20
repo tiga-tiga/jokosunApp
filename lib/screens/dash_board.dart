@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -18,11 +16,13 @@ import 'package:jokosun/screens/pending_installs.dart';
 import 'package:jokosun/screens/profile/profile.dart';
 import 'package:jokosun/screens/search_install.dart';
 import 'package:jokosun/screens/shop_screen.dart';
+import 'package:jokosun/screens/technical_sheet_screen.dart';
+import 'package:jokosun/utils/app_format.dart';
 import 'package:jokosun/widgets/app_drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/app_colors.dart';
-import 'installation/installation_screen.dart';
+import 'installation/installation_timeline.dart';
 
 class DashBoard extends StatefulWidget {
   static const routeName = '/dashboard';
@@ -57,9 +57,9 @@ class _DashBoardState extends State<DashBoard> {
     );
 
     ResponseModel responseModel = responseModelFromJson(response.body);
+    print('dashboard ok');
     print(responseModel.data);
     dashboard = DashboardModel.fromJson(responseModel.data);
-
 
     setState(() {
       loading = false;
@@ -91,7 +91,7 @@ class _DashBoardState extends State<DashBoard> {
                     animationDuration: Duration(milliseconds: 300),
                     animationType: BadgeAnimationType.slide,
                     badgeContent: Text(
-                      '4',
+                      dashboard.unreadNotifications.count.toString(),
                       style: TextStyle(color: Colors.white),
                     ),
                     child: IconButton(
@@ -167,7 +167,9 @@ class _DashBoardState extends State<DashBoard> {
                                   Text('Installations réalisées',
                                       style: mediumLightTextStyle(
                                           AppColors.PRIMARY_COLOR)),
-                                  Text('10 ',
+                                  Text(
+                                      dashboard.finishedInstallations
+                                          .toString(),
                                       style: mediumLightTextStyle(
                                           AppColors.PRIMARY_COLOR)),
                                   Row(
@@ -206,7 +208,8 @@ class _DashBoardState extends State<DashBoard> {
                                       AppColors.PRIMARY_COLOR),
                                 ),
                                 Text(
-                                  '300.000 Fcfa ',
+                                  dashboard.balance
+                                      .toString() + ' Fcfa',
                                   style: mediumLightTextStyle(
                                       AppColors.PRIMARY_COLOR),
                                 ),
@@ -250,28 +253,17 @@ class _DashBoardState extends State<DashBoard> {
                                       AppColors.PRIMARY_COLOR),
                                 ),
                                 Text(
-                                  '280 points',
+                                  '${dashboard.bonus} points',
                                   style: mediumLightTextStyle(
                                       AppColors.PRIMARY_COLOR),
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    Text(
-                                      'Tout voir',
-                                      style: TextStyle(
-                                          decoration: TextDecoration.underline,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w300,
-                                          color: AppColors.PRIMARY_COLOR),
-                                    ),
-                                  ],
-                                )
+
                               ],
                             ),
                           ),
                         ),
                       ),
+                      dashboard.nextInstallation != null ?
                       Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -296,7 +288,7 @@ class _DashBoardState extends State<DashBoard> {
                                 height: 8,
                               ),
                               Text(
-                                'N°11',
+                                'N°${dashboard.nextInstallation.id}',
                                 style: mediumLightTextStyle(
                                     AppColors.PRIMARY_COLOR),
                               ),
@@ -304,72 +296,169 @@ class _DashBoardState extends State<DashBoard> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'le 16/10/2020 à 16h30',
+                                    '${dashboard.nextInstallation.application.offer.commissioningDate}',
                                     style: mediumLightTextStyle(
                                         AppColors.PRIMARY_COLOR),
                                   ),
                                   SizedBox(
                                     width: 8,
                                   ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(8))),
-                                    padding: EdgeInsets.all(2),
-                                    child: Text(
-                                      'Aujourd\'hui',
-                                      style: smallBoldTextStyle(Colors.white),
-                                    ),
-                                  ),
+                                  dayDifference(dashboard
+                                              .nextInstallation
+                                              .application
+                                              .offer
+                                              .commissioningDate) >
+                                          0
+                                      ? Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8))),
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 2, horizontal: 4),
+                                          child: Text(
+                                            'Dans ${dayDifference(dashboard.nextInstallation.application.offer.commissioningDate)}  jours',
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                        )
+                                      : Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.red,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8))),
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 2, horizontal: 4),
+                                          child: Text(
+                                            'Aujourd\'hui',
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                        ),
                                 ],
                               ),
                               SizedBox(
                                 height: 8,
                               ),
+                              SizedBox(
+                                height: 8,
+                              ),
                               Text(
-                                'Kit 4 rémunéré 200 000 Fcfa / 80 points',
+                                'Kit ${dashboard.nextInstallation.application.offer.kit.name} rémunéré ${formatCurrency(int.parse(dashboard.nextInstallation.application.offer.flatRate))}Fcfa / bonus ${dashboard.nextInstallation.application.offer.kit.category.coefficient} points',
                                 style: mediumLightTextStyle(
                                     AppColors.PRIMARY_COLOR),
                               ),
                               Text(
-                                'Mr Diouf, Fatick, Loul-Séséne',
+                                '${dashboard.nextInstallation.application.offer.customerName}',
                                 style: mediumLightTextStyle(
                                     AppColors.PRIMARY_COLOR),
                               ),
                               SizedBox(
+                                height: 8,
+                              ),
+                              SizedBox(
                                 height: 12,
                               ),
-                              Center(
-                                child: Text(
-                                  'Préparation terminée',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.green),
-                                ),
-                              ),
-                              Center(
-                                child: RaisedButton.icon(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(18.0),
-                                        side: BorderSide(color: Colors.green)),
-                                    color: Colors.white,
-                                    onPressed: () {
-                                      Navigator.of(context).pushNamed(
-                                          InstallationScreen.routeName);
-                                    },
-                                    icon: Icon(Icons.play_circle_filled,
-                                        color: Colors.green),
-                                    label: Text(
-                                      'Démarrer l\'instalation',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.green),
-                                    )),
-                              ),
+                              dashboard.nextInstallation.status == 'PENDING'
+                                  ? Center(
+                                      child: Text(
+                                        'Préparation non terminé',
+                                        style: smallBoldTextStyle(Colors.red),
+                                      ),
+                                    )
+                                  : dashboard.nextInstallation.status ==
+                                          'FINISHED'
+                                      ? Center(
+                                          child: Text(
+                                            'Installation terminée',
+                                            style: smallBoldTextStyle(
+                                                Colors.green),
+                                          ),
+                                        )
+                                      : dashboard.nextInstallation.status ==
+                                              'CHECKLIST'
+                                          ? Center(
+                                              child: Text(
+                                                'Préparation terminée',
+                                                style: smallBoldTextStyle(
+                                                    Colors.green),
+                                              ),
+                                            )
+                                          : SizedBox(),
+                              dashboard.nextInstallation.status == 'PENDING'
+                                  ? Center(
+                                      child: RaisedButton.icon(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(18.0),
+                                              side: BorderSide(
+                                                  color: Colors.orange)),
+                                          color: Colors.white,
+                                          onPressed: () async {
+                                            Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        TechnicalSheetScreen(
+                                                          installationId: dashboard
+                                                              .nextInstallation
+                                                              .id,
+                                                        )))
+                                                .then((value) {
+                                              if (value != null && value) {
+                                                getDashboard();
+                                              }
+                                            });
+                                          },
+                                          icon: Icon(Icons.warning,
+                                              color: Colors.orange),
+                                          label: Text(
+                                            ' Finir la préparation',
+                                            style: smallBoldTextStyle(
+                                                Colors.orange),
+                                          )),
+                                    )
+                                  : dashboard.nextInstallation.status ==
+                                          'FINISHED'
+                                      ? SizedBox()
+                                      : Center(
+                                          child: RaisedButton.icon(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          18.0),
+                                                  side: BorderSide(
+                                                      color: Colors.green)),
+                                              color: Colors.white,
+                                              onPressed: () async {
+                                                Navigator.of(context)
+                                                    .push(MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            InstallationTimeline(
+                                                              installation:
+                                                                  dashboard
+                                                                      .nextInstallation,
+                                                            )))
+                                                    .then((value) {
+                                                  getDashboard();
+                                                });
+                                              },
+                                              icon: Icon(
+                                                  Icons.play_circle_filled,
+                                                  color: Colors.green),
+                                              label: Text(
+                                                dashboard.nextInstallation
+                                                            .status ==
+                                                        'CHECKLIST'
+                                                    ? "Démarrer l'installation"
+                                                    : "Continuer l'installation",
+                                                style: smallBoldTextStyle(
+                                                    Colors.green),
+                                              )),
+                                        ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: <Widget>[
@@ -391,7 +480,7 @@ class _DashBoardState extends State<DashBoard> {
                             ],
                           ),
                         ),
-                      ),
+                      ): SizedBox(),
                     ],
                   ),
                 ),

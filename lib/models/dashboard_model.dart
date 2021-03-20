@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:jokosun/models/installations_model.dart';
+
 DashboardModel dashboardModelFromJson(String str) => DashboardModel.fromJson(json.decode(str));
 
 String dashboardModelToJson(DashboardModel data) => json.encode(data.toJson());
@@ -12,25 +14,29 @@ class DashboardModel {
   DashboardModel({
     this.unreadNotifications,
     this.bonus,
+    this.balance,
     this.finishedInstallations,
     this.nextInstallation,
   });
 
   UnreadNotifications unreadNotifications;
   int bonus;
+  int balance;
   int finishedInstallations;
-  dynamic nextInstallation;
+  Installation nextInstallation;
 
   factory DashboardModel.fromJson(Map<String, dynamic> json) => DashboardModel(
     unreadNotifications: UnreadNotifications.fromJson(json["unreadNotifications"]),
     bonus: json["bonus"],
+    balance: json["balance"],
     finishedInstallations: json["finishedInstallations"],
-    nextInstallation: json["nextInstallation"],
+    nextInstallation: json["nextInstallation"] != null ?  Installation.fromJson(json["nextInstallation"]) : null,
   );
 
   Map<String, dynamic> toJson() => {
     "unreadNotifications": unreadNotifications.toJson(),
     "bonus": bonus,
+    "balance": balance,
     "finishedInstallations": finishedInstallations,
     "nextInstallation": nextInstallation,
   };

@@ -55,6 +55,7 @@ class _AdminInstallationsState extends State<AdminInstallations> {
         "Authorization": "Bearer $token",
       },
     );
+    print(response.body);
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,

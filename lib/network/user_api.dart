@@ -145,4 +145,21 @@ Future<ResponseModel> sendInvoice(
     print(response.body);
     return responseModelFromJson(utf8.decode(response.bodyBytes));
   }
+
+  Future<ResponseModel> markNotificationAsRead(String id) async {
+    final String apiUrl = '$baseUrl/notifications/mark-as-read';
+
+    final prefs = await SharedPreferences.getInstance();
+    print('init shared');
+    String token = await prefs.get('userToken');
+    final response = await http.post(apiUrl, headers: {
+      "Authorization": "Bearer $token",
+    }, body: {
+      "notification_id": id,
+    });
+    print(response.body);
+
+    return responseModelFromJson(utf8.decode(response.bodyBytes));
+  }
+
 }

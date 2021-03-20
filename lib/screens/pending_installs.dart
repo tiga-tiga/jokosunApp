@@ -6,10 +6,12 @@ import 'package:jokosun/constants/app_style.dart';
 import 'package:jokosun/constants/app_text.dart';
 import 'package:jokosun/models/installations_model.dart';
 import 'package:jokosun/models/response_model.dart';
+import 'package:jokosun/providers/user.dart';
 import 'package:jokosun/screens/installation/installation_timeline.dart';
 import 'package:jokosun/screens/technical_sheet_screen.dart';
 import 'package:jokosun/utils/app_format.dart';
 import 'package:jokosun/widgets/installation_timaline.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PendingInstalls extends StatefulWidget {
@@ -24,9 +26,10 @@ Future<ResponseModel> _future;
 class _PendingInstallsState extends State<PendingInstalls> {
   var items = List<Installation>();
   bool loading = false;
+  int companyId;
   var _value = "all";
 
-  Future<ResponseModel> getInstallations(String status) async {
+  Future<ResponseModel> getInstallations(String status, int companyId) async {
     // items.clear();
     setState(() {
       loading = true;
@@ -43,9 +46,9 @@ class _PendingInstallsState extends State<PendingInstalls> {
         'status': status,
       };
       uri = Uri.https(
-          'jokosun.dohappit.com', '/api/installations', queryParameters);
+          'jokosun.dohappit.com', '/api/installations/$companyId', queryParameters);
     } else {
-      uri = Uri.https('jokosun.dohappit.com', '/api/installations');
+      uri = Uri.https('jokosun.dohappit.com', '/api/installations/$companyId');
     }
 
     final response = await http.get(
@@ -79,7 +82,8 @@ class _PendingInstallsState extends State<PendingInstalls> {
 
   @override
   void initState() {
-    _future = getInstallations(null);
+    companyId = Provider.of<UserProvider>(context, listen: false).user.company.id;
+    _future = getInstallations(null, companyId);
     super.initState();
   }
 
@@ -143,7 +147,7 @@ class _PendingInstallsState extends State<PendingInstalls> {
                               onChanged: (value) {
                                 setState(() {
                                   _value = value;
-                                  getInstallations(value);
+                                  getInstallations(value, companyId);
                                 });
                               },
                               value: _value,
@@ -309,8 +313,7 @@ class _PendingInstallsState extends State<PendingInstalls> {
                                                             .then((value) {
                                                           if (value != null &&
                                                               value) {
-                                                            getInstallations(
-                                                                _value);
+                                                            getInstallations(_value, companyId);
                                                           }
                                                         });
                                                       },
@@ -347,8 +350,7 @@ class _PendingInstallsState extends State<PendingInstalls> {
                                                                               installation: items[index],
                                                                             )))
                                                                 .then((value) {
-                                                              getInstallations(
-                                                                  _value);
+                                                              getInstallations(_value, companyId);
                                                             });
                                                           },
                                                           icon: Icon(

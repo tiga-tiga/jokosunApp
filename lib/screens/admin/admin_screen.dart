@@ -56,25 +56,25 @@ class _AdminScreenState extends State<AdminScreen> {
                           color: AppColors.PRIMARY_COLOR,
                         ),
                       )),
-                  Card(
-                      elevation: 2,
-                      child: ListTile(
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(AdminInstallations.routeName);
-                        },
-                        leading: Icon(
-                          Icons.timer,
-                          color: AppColors.PRIMARY_COLOR,
-                        ),
-                        title: Text('Les installations',
-                            style:
-                                regularLightTextStyle(AppColors.PRIMARY_COLOR)),
-                        trailing: Icon(
-                          Icons.chevron_right,
-                          color: AppColors.PRIMARY_COLOR,
-                        ),
-                      )),
+                  // Card(
+                  //     elevation: 2,
+                  //     child: ListTile(
+                  //       onTap: () {
+                  //         Navigator.of(context)
+                  //             .pushNamed(AdminInstallations.routeName);
+                  //       },
+                  //       leading: Icon(
+                  //         Icons.timer,
+                  //         color: AppColors.PRIMARY_COLOR,
+                  //       ),
+                  //       title: Text('Les installations',
+                  //           style:
+                  //               regularLightTextStyle(AppColors.PRIMARY_COLOR)),
+                  //       trailing: Icon(
+                  //         Icons.chevron_right,
+                  //         color: AppColors.PRIMARY_COLOR,
+                  //       ),
+                  //     )),
                   Card(
                       elevation: 2,
                       child: ListTile(

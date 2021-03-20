@@ -64,7 +64,7 @@ class Appdrawer extends StatelessWidget {
                         Icon(Icons.lock_clock, color: Colors.red.shade500,),
                         SizedBox(width: 5,),
                         Text(
-                          'Installations en attentes',
+                          'Mes Installations',
                           style: TextStyle(color: AppColors.PRIMARY_COLOR),
                         ),
                       ],

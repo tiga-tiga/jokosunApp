@@ -3,7 +3,9 @@ import 'package:jokosun/providers/user.dart';
 import 'package:jokosun/screens/add_invoce.dart';
 import 'package:jokosun/screens/add_team_screen.dart';
 import 'package:jokosun/screens/admin/admin_companies_screen.dart';
+import 'package:jokosun/screens/admin/admin_create_company.dart';
 import 'package:jokosun/screens/admin/admin_create_offer_screen.dart';
+import 'package:jokosun/screens/admin/admin_installation_invoices.dart';
 import 'package:jokosun/screens/admin/admin_installations.dart';
 import 'package:jokosun/screens/admin/admin_offers_screen.dart';
 import 'package:jokosun/screens/admin/admin_screen.dart';
@@ -75,9 +77,11 @@ class MyApp extends StatelessWidget {
           Composeteam.routeName: (ctx) => Composeteam(),
           AdminOffers.routeName: (ctx) => AdminOffers(),
           AdminCreateOffer.routeName: (ctx) => AdminCreateOffer(),
+          AdminCreateCompany.routeName: (ctx) => AdminCreateCompany(),
           AdminInstallations.routeName: (ctx) => AdminInstallations(),
           AdminCompaniesScreen.routeName: (ctx) => AdminCompaniesScreen(),
           AddInvoice.routeName: (ctx) => AddInvoice(),
+          AdminInstallationInvoices.routeName: (ctx) => AdminInstallationInvoices(),
         },
       ),
     );
